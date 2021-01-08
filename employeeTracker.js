@@ -77,7 +77,6 @@ function start() {
         });
 }
 
-// ********** COME BACK AND FIX THIS ********************
 //   Function for viewing all Employees
 function viewEmployees() {
     var viewQuery = "SELECT * FROM employeeTracker_DB.employees"
@@ -227,6 +226,3 @@ function addDepartment() {
 
         })
 }
-
-
-//   Function for Updating Employee Role
