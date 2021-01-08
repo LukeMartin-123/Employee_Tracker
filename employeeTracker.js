@@ -23,13 +23,22 @@ connection.connect(function (err) {
     start()
 });
 
-var start = function () {
+function start() {
     inquirer
         .prompt({
             name: "startSelection",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View All Departments", "View All Roles", "Add Employee", "Add Department", "Add Role", "Update Employee Role"]
+            choices: [ 
+            "View All Employees", 
+            "View All Departments", 
+            "View All Roles", 
+            "Add Employee", 
+            "Add Department", 
+            "Add Role", 
+            "Update Employee Role",
+            "Exit"
+        ]
         })
         .then(function (answer) {
             switch (answer.action) {
@@ -46,15 +55,15 @@ var start = function () {
                     break;
 
                 case "Add Employee":
-                    // songSearch();
+                    addEmployee();
                     break;
 
                 case "Add Department":
-                    // songSearch();
+                    addDepartment();
                     break;
 
                 case "Add Role":
-                    // songSearch();
+                    addRole();
                     break;
 
                 case "Update Employee":
@@ -68,27 +77,140 @@ var start = function () {
         });
 }
 
+// ********** COME BACK AND FIX THIS ********************
 //   Function for viewing all Employees
-var viewEmployees = function () {
-    var query = "SELECT * FROM employeeTracker_DB.employees"
-    connection.query(query,
-        function (err, res) {
-            if (err) throw err;
-        }
-    )
-    viewEmployees()
-    console.table(query)
+function viewEmployees() {
+    var viewQuery = "SELECT * FROM employeeTracker_DB.employees"
+    connection.query(viewQuery)
+    console.table(viewQuery)
+    start()
 }
-
 
 //   Function for viewing all Departments
 
 //   Function for viewing all Roles
 
 //   Function for Adding Employee
+function addEmployee() {
+    inquirer
+        .prompt([
+            {
+                name: "firstName",
+                type: "input",
+                message: "What is the employee's first name?"
+            },
 
-//   Function for Adding Department
+            {
+                name: "lastName",
+                type: "input",
+                message: "What is the employee's last name?"
+            },
+
+            {
+                name: "role",
+                type: "list",
+                message: "What is the employee's role?",
+                choices: "Engineer, Accountant, Lawyer, Intern"
+            },
+
+            {
+                name: "manager",
+                type: "input",
+                message: "Who is the employee's manager?",
+            },
+        ])
+        .then(function (answer) {
+            var employeeQuery = "INSERT INTO employees SET ?"
+            connection.query(employeeQuery,
+                {
+                    first_name: answer.firstName,
+                    last_name: answer.lastName,
+                    role: answer.role,
+                    manager: answer.manager,
+                },
+                function (err) {
+                    if (err) throw err;
+                    console.log("Your employee was successfully added!");
+                    start();
+                }
+            )
+
+
+        })
+}
 
 //   Function for Adding Role
+function addRole() {
+    inquirer
+        .prompt([
+            {
+                name: "title",
+                type: "input",
+                message: "What is the title of the role?"
+            },
+
+            {
+                name: "salary",
+                type: "input",
+                message: "What is the salary for the role?"
+            },
+
+            {
+                name: "department",
+                type: "input",
+                message: "What department is the role in??",
+            },
+        ])
+        .then(function (answer) {
+            var employeeQuery = "INSERT INTO role SET ?"
+            connection.query(employeeQuery,
+                {
+                    title: answer.title,
+                    salary: answer.salary,
+                    department: answer.department,
+                },
+                function (err) {
+                    if (err) throw err;
+                    console.log("Your role was successfully added!");
+                    start();
+                }
+            )
+
+
+        })
+}
+
+
+
+//   Function for Adding Department
+function addDepartment() {
+    inquirer
+        .prompt([
+            {
+                name: "departmentName",
+                type: "input",
+                message: "What is the name of the department?"
+            },
+        ])
+        .then(function (answer) {
+            var employeeQuery = "INSERT INTO department SET ?"
+            connection.query(employeeQuery,
+                {
+                    name: answer.departmentName,
+                },
+                function (err) {
+                    if (err) throw err;
+                    console.log("Your department was successfully added!");
+                    start();
+                }
+            )
+
+
+        })
+}
+
+
+
+
 
 //   Function for Updating Employee Role
