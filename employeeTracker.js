@@ -19,6 +19,41 @@ var connection = mysql.createConnection({
 // connect to the mysql server and sql database
 connection.connect(function(err) {
   if (err) throw err;
-  // run the start function after the connection is made to prompt the user
-  start();
+  console.log("connected as id " + connection.threadId);
 });
+
+function start() {
+    inquirer
+      .prompt({
+        name: "startSelection",
+        type: "list",
+        message: "What would you like to do?",
+        choices: ["View All Employees", "View All Departments", "View All Roles", "Add Employee", "Add Department", "Add Role", "Update Employee Role" ]
+      })
+      .then(function(answer) {
+        // based on their answer, call a certain function
+        if (answer.postOrBid === "POST") {
+        //   postAuction();
+        }
+        else if(answer.postOrBid === "BID") {
+        //   bidAuction();
+        } else{
+          connection.end();
+        }
+      });
+  }
+
+
+//   Function for viewing all Employees
+
+//   Function for viewing all Departments
+
+//   Function for viewing all Roles
+
+//   Function for Adding Employee
+
+//   Function for Adding Department
+
+//   Function for Adding Role
+
+//   Function for Updating Employee Role
