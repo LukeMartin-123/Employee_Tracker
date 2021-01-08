@@ -41,7 +41,7 @@ function start() {
         ]
         })
         .then(function (answer) {
-            switch (answer.action) {
+            switch (answer.startSelection) {
                 case "View All Employees":
                     viewEmployees();
                     break;
@@ -81,8 +81,10 @@ function start() {
 //   Function for viewing all Employees
 function viewEmployees() {
     var viewQuery = "SELECT * FROM employeeTracker_DB.employees"
-    connection.query(viewQuery)
-    console.table(viewQuery)
+    connection.query(viewQuery, function (err, res) { 
+    if (err) throw err;
+    console.table(res)
+     })
     start()
 }
 
@@ -175,8 +177,6 @@ function addRole() {
                     start();
                 }
             )
-
-
         })
 }
 
@@ -208,9 +208,6 @@ function addDepartment() {
 
         })
 }
-
-
-
 
 
 //   Function for Updating Employee Role
