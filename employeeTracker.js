@@ -29,16 +29,16 @@ function start() {
             name: "startSelection",
             type: "list",
             message: "What would you like to do?",
-            choices: [ 
-            "View All Employees", 
-            "View All Departments", 
-            "View All Roles", 
-            "Add Employee", 
-            "Add Department", 
-            "Add Role", 
-            "Update Employee Role",
-            "Exit"
-        ]
+            choices: [
+                "View All Employees",
+                "View All Departments",
+                "View All Roles",
+                "Add Employee",
+                "Add Department",
+                "Add Role",
+                "Update Employee Role",
+                "Exit"
+            ]
         })
         .then(function (answer) {
             switch (answer.startSelection) {
@@ -47,11 +47,11 @@ function start() {
                     break;
 
                 case "View All Departments":
-                    // multiSearch();
+                    viewDepartments();
                     break;
 
                 case "View All Roles":
-                    // rangeSearch();
+                    viewRoles();
                     break;
 
                 case "Add Employee":
@@ -81,17 +81,32 @@ function start() {
 //   Function for viewing all Employees
 function viewEmployees() {
     var viewQuery = "SELECT * FROM employeeTracker_DB.employees"
-    connection.query(viewQuery, function (err, res) { 
-    if (err) throw err;
-    console.table(res)
-     })
+    connection.query(viewQuery, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+    })
     start()
 }
 
 //   Function for viewing all Departments
+function viewDepartments() {
+    var viewQuery = "SELECT * FROM employeeTracker_DB.departments;"
+    connection.query(viewQuery, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+    })
+    start()
+}
 
 //   Function for viewing all Roles
-
+function viewRoles() {
+    var viewQuery = "SELECT * FROM employeeTracker_DB.roles;"
+    connection.query(viewQuery, function (err, res) {
+        if (err) throw err;
+        console.table(res)
+    })
+    start()
+}
 //   Function for Adding Employee
 function addEmployee() {
     inquirer
@@ -152,10 +167,15 @@ function addRole() {
 
             {
                 name: "salary",
-                type: "list",
-                message: "What is the salary for the role?"
+                type: "input",
+                message: "What is the salary for the role?",
+                validate: function (value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    return false;
+                }
             },
-
             {
                 name: "department",
                 type: "input",
@@ -163,7 +183,7 @@ function addRole() {
             },
         ])
         .then(function (answer) {
-            var employeeQuery = "INSERT INTO role SET ?"
+            var employeeQuery = "INSERT INTO employeeTracker_DB.roles SET ?"
             connection.query(employeeQuery,
                 {
                     title: answer.title,
@@ -192,10 +212,10 @@ function addDepartment() {
             },
         ])
         .then(function (answer) {
-            var employeeQuery = "INSERT INTO department SET ?"
+            var employeeQuery = "INSERT INTO employeeTracker_DB.departments SET ?"
             connection.query(employeeQuery,
                 {
-                    name: answer.departmentName,
+                    title: answer.departmentName,
                 },
                 function (err) {
                     if (err) throw err;
