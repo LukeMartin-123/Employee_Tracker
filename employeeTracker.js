@@ -110,9 +110,8 @@ function addEmployee() {
 
             {
                 name: "role",
-                type: "list",
+                type: "input",
                 message: "What is the employee's role?",
-                choices: "Engineer, Accountant, Lawyer, Intern"
             },
 
             {
@@ -122,7 +121,7 @@ function addEmployee() {
             },
         ])
         .then(function (answer) {
-            var employeeQuery = "INSERT INTO employees SET ?"
+            var employeeQuery = "INSERT INTO employeeTracker_DB.employees SET ?"
             connection.query(employeeQuery,
                 {
                     first_name: answer.firstName,
@@ -153,7 +152,7 @@ function addRole() {
 
             {
                 name: "salary",
-                type: "input",
+                type: "list",
                 message: "What is the salary for the role?"
             },
 
